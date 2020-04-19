@@ -17,73 +17,40 @@ namespace SimpleCPU
         Or or1 = new Or();
         Not not2 = new Not();
         And and3 = new And();
-
        
 
         public bool InputData(bool inputDataPar)
         {
             inputData = inputDataPar;
-
-
-            and1.i1 = inputDataPar;
-            and1.i2 = writeEnable;
-            bool and1Output = and1.GetOutput();
-            bool set = and1Output;
-
-            not1.i1 = inputDataPar;
-            bool not1Output = not1.GetOutput();
-
-            and2.i1 = not1Output;
-            and2.i2 = writeEnable;
-            bool and2Output = and2.GetOutput();
-            bool reset = and2Output;
-            
-            or1.i2 = set;
-            bool orOutput = or1.GetOutput();
-
-            not2.i1 = reset;
-            bool not2Output = not2.GetOutput();
-
-            and3.i1 = orOutput;
-            and3.i2 = not2Output;
-            bool and3Output = and3.GetOutput();
-
-            or1.i1 = and3Output;
-
-            return and3Output;
+            return Calculation();
         }
 
         public bool WriteEnable(bool writeEnablePar)
         {
             writeEnable = writeEnablePar;
+            return Calculation();
+        }
 
+        private bool Calculation()
+        {
+            bool and1Set_ = and1.I1(inputData);
+                 and1Set_ = and1.I2(writeEnable);
 
-            and1.i1 = inputData;
-            and1.i2 = writeEnablePar;
-            bool and1Output = and1.GetOutput();
-            bool set = and1Output;
+            bool not1_ = not1.I1(inputData);
 
-            not1.i1 = inputData;
-            bool not1Output = not1.GetOutput();
+            bool And2Reset_ = and2.I1(not1_);
+                 And2Reset_ = and2.I2(writeEnable);
 
-            and2.i1 = not1Output;
-            and2.i2 = writeEnablePar;
-            bool and2Output = and2.GetOutput();
-            bool reset = and2Output;
+            bool or1_ = or1.I2(and1Set_);
 
-            or1.i2 = set;
-            bool orOutput = or1.GetOutput();
+            bool not2_ = not2.I1(And2Reset_);
 
-            not2.i1 = reset;
-            bool not2Output = not2.GetOutput();
+            bool and3_ = and3.I1(or1_);
+                 and3_ = and3.I2(not2_);
 
-            and3.i1 = orOutput;
-            and3.i2 = not2Output;
-            bool and3Output = and3.GetOutput();
+                 or1_ = or1.I1(and3_);
 
-            or1.i1 = and3Output;
-
-            return and3Output;
+            return and3_;
         }
     }
 

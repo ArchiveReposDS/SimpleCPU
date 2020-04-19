@@ -8,14 +8,30 @@ namespace SimpleCPU
     {
         public bool i1;
         public bool i2;
+        public bool output;
 
-        public bool GetOutput()
+        public bool I1(bool i1par)
         {
-            if (i1 && i2)
+            this.i1 = i1par;
+            if (i1par && i2)
             {
-                return true;
+                output = true;
+                return output;
             }
-            return false;
+            output = false;
+            return output;
+        }
+
+        public bool I2(bool i2par)
+        {
+            this.i2 = i2par;
+            if (i1 && i2par)
+            {
+                output = true;
+                return output;
+            }
+            output = false;
+            return output;
         }
     }
 
@@ -23,28 +39,48 @@ namespace SimpleCPU
     {
         public bool i1;
         public bool i2;
+        public bool output;
 
-        public bool GetOutput()
+        public bool I1(bool i1par)
         {
-            if (i1 || i2)
+            this.i1 = i1par;
+            if (i1par || i2)
             {
-                return true;
+                output = true;
+                return output;
             }
-            return false;
+            output = false;
+            return output;
+        }
+
+        public bool I2(bool i2par)
+        {
+            this.i2 = i2par;
+            if (i1 || i2par)
+            {
+                output = true;
+                return output;
+            }
+            output = false;
+            return output;
         }
     }
 
     public class Not
     {
         public bool i1;
+        public bool output;
 
-        public bool GetOutput()
+        public bool I1(bool i1par)
         {
-            if (i1)
+            this.i1 =  i1par;
+            if (i1par)
             {
-                return false;
+                output = false;
+                return output;
             }
-            return true;
+            output = true;
+            return output;
         }
     }
 }
